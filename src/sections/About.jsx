@@ -81,7 +81,7 @@ const About = () => {
               <button
                 onClick={() =>
                   window.open(
-                    "https://docs.google.com/document/d/1ozvuOFXaB7C1NroXLmHuafIx_3Xz6eM5NZraSSS4huk/edit?usp=sharing",
+                    "https://drive.google.com/file/d/1PMfR_ewu7igTqenVqwsYP7p1lEY_CWSJ/view?usp=sharing",
                   )
                 }
                 className="md:text-xl px-2 py-2 border rounded-md cursor-pointer hover:bg-black hover:text-white ease-in-out duration-300 border-neutral-200 bg-white/20 backdrop-blur-md"
