@@ -11,6 +11,90 @@ body{
   cursor: url('/assets/cursor24.png'), auto;
 }
 
+/* ---- Section themes ----
+   Each page section carries one of these classes. Text, logos, borders and
+   hover states all read from the same two colours, so they follow the section's
+   background (blue -> violet -> green).
+   The ink values are duplicated in LogoFilters.jsx. */
+.theme-blue   { --ink: #0a1a45; --accent: #1747d6; }
+.theme-violet { --ink: #22103f; --accent: #6a1fc2; }
+.theme-green  { --ink: #06281a; --accent: #006b36; }
+
+.theme-blue,
+.theme-violet,
+.theme-green {
+  --ink-soft: color-mix(in srgb, var(--ink) 72%, transparent);
+  --line: color-mix(in srgb, var(--ink) 14%, transparent);
+  color: var(--ink);
+}
+
+.ink-soft { color: var(--ink-soft); }
+
+.section-title {
+  font-size: 2.25rem;
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+@media (min-width: 640px) {
+  .section-title { font-size: 3rem; }
+}
+.section-title::after {
+  content: "";
+  display: inline-block;
+  width: 0.16em;
+  height: 0.16em;
+  margin-left: 0.1em;
+  border-radius: 9999px;
+  background: var(--accent);
+}
+
+/* frosted surface. No backdrop-filter on purpose: blurring a smooth gradient
+   looks identical and costs GPU time on every frame. */
+.card {
+  border: 1px solid rgb(255 255 255 / 0.55);
+  background: rgb(255 255 255 / 0.28);
+  border-radius: 1rem;
+}
+.card-hover {
+  transition: border-color 0.3s, background-color 0.3s;
+}
+.card-hover:hover {
+  border-color: var(--accent);
+  background: rgb(255 255 255 / 0.4);
+}
+
+.pill,
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: rgb(255 255 255 / 0.35);
+  color: var(--ink);
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+.pill { border-radius: 9999px; padding: 0.25rem 1rem; }
+.icon-btn { border-radius: 9999px; width: 2.75rem; height: 2.75rem; }
+.pill:hover,
+.icon-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* logos are white-background images; LogoFilters.jsx turns them into a single
+   colour mark. */
+.logo-mono { opacity: 0.85; transition: opacity 0.3s; }
+.card:hover .logo-mono { opacity: 1; }
+.theme-blue   .logo-mono { filter: url(#mono-blue); }
+.theme-violet .logo-mono { filter: url(#mono-violet); }
+.theme-green  .logo-mono { filter: url(#mono-green); }
+.logo-white { filter: url(#mono-white); }
+
 *{
   font-family: outfit;
 }

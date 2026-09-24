@@ -1,8 +1,8 @@
 import { PerspectiveCamera } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
 import React, { Suspense } from "react";
 
 import CanvasLoader from "../components/CanvasLoader.jsx";
+import InViewCanvas from "../components/InViewCanvas.jsx";
 
 // import { Leva, useControls } from 'leva'
 import MediaQuery, { useMediaQuery } from "react-responsive";
@@ -58,7 +58,7 @@ const Hero = () => {
   // const sizes= calculateSizes(isMobile, isTablet, isSmall);
 
   return (
-    <div className="min-h-screen flex flex-col relative ">
+    <div className="theme-blue min-h-screen flex flex-col relative ">
       <div className="w-full mx-auto flex flex-col sm:mt-36 mt-20 sm:px-10 px-5">
         <p className=" bg-clip-text text-transparent bg-gradient-to-r from-[#71f1ff] from-30%  to-[#2d27e5] to-70% text-2xl sm:text-3xl font-medium text-center">
           Hi, I am Aman!
@@ -74,7 +74,7 @@ const Hero = () => {
         h-full"
       >
         {/* <Leva/> */}
-        <Canvas className="w-full h-full">
+        <InViewCanvas className="w-full h-full">
           <Suspense fallback={<CanvasLoader />}>
             <PerspectiveCamera makeDefault position={[0, 1, 30]} />
             <HeroCamera>
@@ -93,7 +93,7 @@ const Hero = () => {
             <ambientLight intensity={3} />
             <directionalLight position={[5, 70, -10]} />
           </Suspense>
-        </Canvas>
+        </InViewCanvas>
       </div>
     </div>
   );

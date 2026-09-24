@@ -10,13 +10,13 @@ const NavItems = ({ setIsOpen }) => {
 
   return (
     <ul className="flex sm:absolute sm:right-0 sm:px-5 sm:py-0.5 flex-col sm:flex-row gap-6">
-      {/* {["Home", "Work", "Contact", "Resume"].map((item, index)=>(<li key={index} className='text-neutral-500 hover:text-black font-light text-lg transition-colors nav-li'>
+      {/* {["Home", "Work", "Contact", "Resume"].map((item, index)=>(<li key={index} className='text-neutral-700 hover:text-black font-light text-lg transition-colors nav-li'>
                 <a href="/" className='nav-li_a'>
                 {item}</a>
                 
                 </li>))} */}
 
-      <li className=" text-neutral-500 hover:text-black font-light text-lg transition-colors">
+      <li className=" text-neutral-700 hover:text-black font-light text-lg transition-colors">
         <button
           className="cursor-pointer"
           onClick={() => {
@@ -28,7 +28,7 @@ const NavItems = ({ setIsOpen }) => {
         </button>
       </li>
 
-      <li className="cursor-pointer text-neutral-500 hover:text-black font-light text-lg transition-colors">
+      <li className="cursor-pointer text-neutral-700 hover:text-black font-light text-lg transition-colors">
         <button
           className="cursor-pointer"
           onClick={() => {
@@ -39,7 +39,7 @@ const NavItems = ({ setIsOpen }) => {
           Work
         </button>
       </li>
-      <li className="cursor-pointer text-neutral-500 hover:text-black font-light text-lg transition-colors">
+      <li className="cursor-pointer text-neutral-700 hover:text-black font-light text-lg transition-colors">
         <button
           className="cursor-pointer"
           onClick={() => {
@@ -51,12 +51,12 @@ const NavItems = ({ setIsOpen }) => {
         </button>
       </li>
 
-      <li className="cursor-pointer text-neutral-500 hover:text-black font-light text-lg transition-colors">
+      <li className="cursor-pointer text-neutral-700 hover:text-black font-light text-lg transition-colors">
         <button
           className="cursor-pointer"
           onClick={() =>
             window.open(
-              "https://drive.google.com/file/d/1PMfR_ewu7igTqenVqwsYP7p1lEY_CWSJ/view?usp=sharing",
+              "https://drive.google.com/file/d/1kwY6XG_OYAdJSoGr9qY8UPSupUJ1hGKZ/view?usp=sharing",
             )
           }
         >
@@ -86,7 +86,7 @@ const Navbar = () => {
             />
             <a
               href="/"
-              className="text-black/50 text-xl font-medium transition-colors"
+              className="text-neutral-800 text-xl font-medium transition-colors"
             >
               Aman
             </a>
