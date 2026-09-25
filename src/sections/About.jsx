@@ -13,7 +13,8 @@ const facts = [
   ["Based in", "Delhi, India"],
   ["Focus", "Short-form · Long-form · Motion"],
   ["Also", "UI/UX · 3D"],
-  ["Email", <a href={`mailto:${EMAIL}`} className="underline-offset-4 hover:underline">{EMAIL}</a>],
+  // wide: spans both columns on phones, where a long value won't fit in half
+  ["Email", <a href={`mailto:${EMAIL}`} className="underline-offset-4 hover:underline">{EMAIL}</a>, true],
 ];
 
 // The DTU model is 15 MB and takes a moment to set up. Load it once the page
@@ -91,10 +92,10 @@ const About = () => {
         </p>
 
         <dl className="grid grid-cols-2 gap-x-6 gap-y-5 border-t border-ink/10 pt-7">
-          {facts.map(([term, detail]) => (
-            <div key={term}>
+          {facts.map(([term, detail, wide]) => (
+            <div key={term} className={`min-w-0 ${wide ? "col-span-2 sm:col-span-1" : ""}`}>
               <dt className="eyebrow text-ink/45">{term}</dt>
-              <dd className="mt-1.5 font-medium">{detail}</dd>
+              <dd className="mt-1.5 break-words font-medium">{detail}</dd>
             </div>
           ))}
         </dl>

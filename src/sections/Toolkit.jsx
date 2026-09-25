@@ -96,16 +96,22 @@ const Toolkit = () => {
               </div>
             </Reveal>
 
-            <Reveal delay={120} className="grid gap-8 sm:grid-cols-3">
+            <Reveal delay={120} className="grid gap-6 sm:grid-cols-3 sm:gap-8">
               {capabilities.map((group) => (
                 <div key={group.title}>
                   <p className="flex items-center gap-2 font-medium">
                     <span className="h-2 w-2 rounded-full" style={{ background: group.color }} />
                     {group.title}
                   </p>
-                  <ul className="mt-3 space-y-1.5 text-[15px] text-ink/60">
+                  {/* chips on phones (a wrapped row), a plain list from sm up */}
+                  <ul className="mt-3 flex flex-wrap gap-2 text-[15px] text-ink/60 sm:block sm:space-y-1.5">
                     {group.items.map((item) => (
-                      <li key={item}>{item}</li>
+                      <li
+                        key={item}
+                        className="max-sm:rounded-full max-sm:border max-sm:border-ink/10 max-sm:bg-surface/60 max-sm:px-3 max-sm:py-1 max-sm:text-sm"
+                      >
+                        {item}
+                      </li>
                     ))}
                   </ul>
                 </div>

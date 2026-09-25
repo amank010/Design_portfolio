@@ -55,7 +55,7 @@ const Navbar = () => {
       <nav className="glass-dark mx-auto flex h-14 max-w-5xl items-center gap-2 rounded-full pl-2 pr-2 text-white">
         <a href="#top" onClick={close} className="flex items-center gap-2.5 rounded-full py-1 pl-1 pr-3">
           <img src="/assets/face.jpeg" alt="" className="h-9 w-9 rounded-full object-cover" />
-          <span className="font-medium tracking-tight">Aman Kumar</span>
+          <span className="whitespace-nowrap font-medium tracking-tight max-[359px]:hidden">Aman Kumar</span>
         </a>
 
         <ul className="mx-auto hidden items-center gap-1 md:flex">
