@@ -28,6 +28,8 @@ This is my personal portfolio website built using **React.js**, **Tailwind CSS**
 
 ## 📸 Live Demo
 
+🔗 [Visit Portfolio] v2: https://portfolio-aman-xi.vercel.app/
+
 🔗 [Visit Portfolio](https://portfolio-wine-pi-12.vercel.app)
 
 ---
