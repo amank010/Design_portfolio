@@ -4,7 +4,32 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/assets/face-3.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aman Kumar | Portfolio</title>
+    <meta
+      name="description"
+      content="Aman Kumar — video editor and motion designer. Short-form reels and long-form YouTube edits for brands and creators."
+    />
+    <meta name="theme-color" content="#f3f3f6" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://i.ytimg.com" />
+    <link rel="preconnect" href="https://www.youtube-nocookie.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300..800&display=swap"
+    />
+    <title>Aman Kumar — Video Editor & Motion Designer</title>
+    <script>
+      // pick the theme before the first paint: the saved choice, else the OS setting
+      (function () {
+        var theme;
+        try { theme = localStorage.getItem("theme"); } catch (e) {}
+        if (theme !== "dark" && theme !== "light") {
+          theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#0b0b10" : "#f3f3f6";
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

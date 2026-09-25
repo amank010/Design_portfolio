@@ -1,11 +1,21 @@
-import React, { useEffect, useLayoutEffect } from "react";
-import Navbar from "./sections/Navbar";
-import Hero from "./sections/Hero";
-import Projects from "./sections/Projects";
+import { useEffect, useLayoutEffect } from "react";
+
+import Filmstrip from "./components/Filmstrip";
+import Lightbox from "./components/media/Lightbox";
+import SoundProvider from "./components/media/SoundProvider";
+import Transport from "./components/Transport";
+import { ScrollTrigger } from "./lib/gsap";
+import { observe } from "./lib/observe";
 import About from "./sections/About";
-import Skills from "./sections/Skills";
-import ScrollBackground from "./components/ScrollBackground";
-import LogoFilters from "./components/LogoFilters";
+import Design from "./sections/Design";
+import Footer from "./sections/Footer";
+import Hero from "./sections/Hero";
+import Intro from "./sections/Intro";
+import Journey from "./sections/Journey";
+import LongForm from "./sections/LongForm";
+import Navbar from "./sections/Navbar";
+import ShortForm from "./sections/ShortForm";
+import Toolkit from "./sections/Toolkit";
 
 const App = () => {
   //save scroll position (debounced, not on every scroll event)
@@ -34,25 +44,50 @@ const App = () => {
       window.requestAnimationFrame(() => {
         window.scrollTo({
           top: parseInt(savedScrollY),
-          behavior: "auto", // Use 'auto' here for immediate jump
+          behavior: "instant", // "auto" would follow the CSS smooth scrolling
         });
       });
     }
   }, []);
 
-  return (
-    <div className="relative min-h-screen w-full">
-      <LogoFilters />
-      <ScrollBackground />
+  // pause looping CSS animations (REC dot, filmstrip) while
+  // their section is off screen
+  useEffect(() => {
+    const stops = [...document.querySelectorAll("[data-animates]")].map((element) =>
+      observe(element, (entry) => {
+        element.dataset.offscreen = entry.isIntersecting ? "false" : "true";
+      }),
+    );
+    return () => stops.forEach((stop) => stop());
+  }, []);
 
-      <div className="relative z-10 max-w-8xl mx-auto ">
+  // scroll positions shift once the web fonts arrive
+  useEffect(() => {
+    document.fonts?.ready.then(() => ScrollTrigger.refresh());
+  }, []);
+
+  return (
+    <SoundProvider>
+      <div className="relative overflow-x-clip">
         <Navbar />
-        <Hero />
-        <Skills />
-        <Projects />
-        <About />
+        <main>
+          <Hero />
+          <Intro />
+          <div id="work" className="relative">
+            <Filmstrip />
+            <ShortForm />
+            <LongForm />
+          </div>
+          <Toolkit />
+          <Journey />
+          <Design />
+          <About />
+        </main>
+        <Footer />
+        <Transport />
+        <Lightbox />
       </div>
-    </div>
+    </SoundProvider>
   );
 };
 

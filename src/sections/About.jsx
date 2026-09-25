@@ -1,128 +1,145 @@
-import React, { Suspense } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 
-import { Center, OrbitControls } from "@react-three/drei";
-import CanvasLoader from "../components/CanvasLoader";
-import InViewCanvas from "../components/InViewCanvas";
+import { ArrowUpRightIcon, MailIcon, WhatsAppIcon } from "../components/Icons";
+import Reveal from "../components/Reveal";
+import SectionHeader from "../components/SectionHeader";
+import SocialLinks from "../components/SocialLinks";
+import { EMAIL, RESUME_URL, WHATSAPP_URL } from "../data/work";
+import { observe } from "../lib/observe";
 
-import DtuNew from "../components/DtuNew";
-import HeroCamera from "../components/HeroCamera";
-import {
-  ArrowUpRightIcon,
-  GitHubIcon,
-  InstagramIcon,
-  LinkedInIcon,
-  XIcon,
-} from "../components/Icons";
+const About3D = lazy(() => import("./About3D"));
 
-const socials = [
-  { label: "GitHub", href: "https://github.com/amank010", Icon: GitHubIcon },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/aman-kumar-4165071b8/",
-    Icon: LinkedInIcon,
-  },
-  { label: "X", href: "https://x.com/AMAN1266331", Icon: XIcon },
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/amankr010/",
-    Icon: InstagramIcon,
-  },
+const facts = [
+  ["Based in", "Delhi, India"],
+  ["Focus", "Short-form · Long-form · Motion"],
+  ["Also", "UI/UX · 3D"],
+  ["Email", <a href={`mailto:${EMAIL}`} className="underline-offset-4 hover:underline">{EMAIL}</a>],
 ];
 
+// The DTU model is 15 MB and takes a moment to set up. Load it once the page
+// has settled (while the visitor is still up top), or as soon as About gets
+// close, whichever comes first, so the setup cost doesn't land mid-scroll.
+const useDeferredMount = () => {
+  const ref = useRef(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let timer = 0;
+    let idle = 0;
+    const mount = () => setReady(true);
+
+    const whenIdle = () => {
+      timer = window.setTimeout(() => {
+        if ("requestIdleCallback" in window) idle = window.requestIdleCallback(mount, { timeout: 4000 });
+        else mount();
+      }, 2500);
+    };
+    if (document.readyState === "complete") whenIdle();
+    else window.addEventListener("load", whenIdle, { once: true });
+
+    const stop = observe(
+      ref.current,
+      (entry) => {
+        if (entry.isIntersecting) mount();
+      },
+      { rootMargin: "100% 0px" },
+    );
+
+    return () => {
+      stop();
+      window.clearTimeout(timer);
+      if (idle) window.cancelIdleCallback(idle);
+      window.removeEventListener("load", whenIdle);
+    };
+  }, []);
+
+  return [ref, ready];
+};
+
 const About = () => {
+  const [modelRef, near] = useDeferredMount();
+
   return (
-    <section className="theme-green scroll-mt-24 my-20 sm:px-50 px-15" id="about">
-      <p className="section-title mb-7">About Me</p>
-      <div className="grid lg:grid-cols-2 grid-cols-1 mt-7 gap-5 w-full">
-        <div className="card flex flex-col gap-8 px-6 sm:px-8 py-10">
-          <img
-            className="w-12 h-12 rounded-full object-cover"
-            src="/assets/face.jpeg"
-            alt="Aman Kumar"
-          />
-          <div className="flex flex-col gap-3">
-            <p className="animatedText text-4xl font-medium tracking-tight">
-              I'm Aman Kumar
-            </p>
-            <p className="animatedText text-xl font-light tracking-widest text-(--accent)">
-              A CREATIVE DESIGNER
-            </p>
-            <p className="animatedText text-lg ink-soft leading-relaxed">
-              Passionate student at Delhi Technological University (DTU) with a
-              strong focus on UI/UX design, motion graphics, and video content
-              creation. Skilled in Figma, Adobe After Effects, Premiere Pro,
-              Blender, and visual storytelling, with experience crafting
-              engaging digital experiences, interactive interfaces, and
-              high-impact content. Eager to contribute to innovative design
-              projects and collaborate with creative, forward-thinking teams.
-            </p>
-          </div>
+  <section id="about" data-marker="About" className="container-x py-24 sm:py-32">
+    <SectionHeader
+      track="V4"
+      color="#3a3a46"
+      label="About"
+      title={
+        <>
+          Behind the <em>timeline</em>.
+        </>
+      }
+    />
 
-          <div className="flex gap-3">
-            {socials.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={social.label}
-                className="icon-btn"
-              >
-                <social.Icon className="w-5 h-5" />
-              </a>
-            ))}
-          </div>
-
-          <div className="flex gap-3 flex-wrap">
-            <a
-              href="https://drive.google.com/file/d/1kwY6XG_OYAdJSoGr9qY8UPSupUJ1hGKZ/view?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="pill md:text-lg py-2"
-            >
-              My Resume
-              <ArrowUpRightIcon className="w-4 h-4" />
-            </a>
-            <a
-              href="https://wa.me/918130703182"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="pill md:text-lg py-2"
-            >
-              Contact Me
-              <ArrowUpRightIcon className="w-4 h-4" />
-            </a>
+    <div className="mt-14 grid gap-5 lg:grid-cols-[1.1fr_1fr]">
+      <Reveal className="glass-light flex flex-col gap-8 rounded-[30px] p-7 sm:p-10">
+        <div className="flex items-center gap-4">
+          <img src="/assets/face.jpeg" alt="Aman Kumar" className="h-16 w-16 rounded-2xl object-cover" />
+          <div>
+            <p className="text-2xl font-semibold tracking-tight">Aman Kumar</p>
+            <p className="text-ink/60">Video editor & motion designer</p>
           </div>
         </div>
 
-        <div className="card sm:p-7 p-4 flex flex-col gap-5">
-          <InViewCanvas className="rounded-lg">
-            <ambientLight intensity={1} />
-            <directionalLight position={[0, 2, 10]} />
+        <p className="text-lg leading-relaxed text-ink/75">
+          I'm a video editor and motion designer, and a Computer Engineering graduate of Delhi
+          Technological University. I've made 100+ short-form videos for PokerBaazi's IP, worked on
+          content and ads for Paytm and Fisdom at Growth Rocket, and cut long-form for YouTube
+          creators. On the side I design interfaces and build in 3D. I care about the first second,
+          the pacing after it, and motion that feels clean.
+        </p>
 
-            <Center>
-              <Suspense fallback={<CanvasLoader />}>
-                <group scale={1}>
-                  <HeroCamera>
-                    <DtuNew
-                      scale={10}
-                      rotation={[0, 0, 0]}
-                      position={[-61, -143, 165]}
-                    />
-                  </HeroCamera>
-                </group>
-              </Suspense>
-            </Center>
-            <OrbitControls
-              maxPolarAngle={Math.PI / 2}
-              minPolarAngle={Math.PI / 2}
-              enableZoom={true}
-              enablePan={true}
-            />
-          </InViewCanvas>
+        <dl className="grid grid-cols-2 gap-x-6 gap-y-5 border-t border-ink/10 pt-7">
+          {facts.map(([term, detail]) => (
+            <div key={term}>
+              <dt className="eyebrow text-ink/45">{term}</dt>
+              <dd className="mt-1.5 font-medium">{detail}</dd>
+            </div>
+          ))}
+        </dl>
+
+        {/* "Let's talk" in the navbar and hero jumps here */}
+        <div id="contact" className="mt-auto scroll-mt-28 border-t border-ink/10 pt-7">
+          <p className="text-2xl font-semibold tracking-tight">
+            Got <span className="serif-em">footage</span>? Let's make it unmissable.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <a href={`mailto:${EMAIL}`} className="btn btn-accent">
+              <MailIcon className="h-4 w-4" />
+              Email me
+            </a>
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="btn btn-light">
+              <WhatsAppIcon className="h-4 w-4" />
+              WhatsApp
+            </a>
+            <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className="btn btn-ink">
+              Resume
+              <ArrowUpRightIcon className="h-4 w-4" />
+            </a>
+          </div>
+          <div className="mt-5">
+            <SocialLinks />
+          </div>
         </div>
-      </div>
-    </section>
+      </Reveal>
+
+      <Reveal
+        ref={modelRef}
+        delay={120}
+        className="glass-light relative min-h-[380px] overflow-hidden rounded-[30px] sm:min-h-[460px]"
+      >
+        {near && (
+          <Suspense fallback={null}>
+            <About3D />
+          </Suspense>
+        )}
+        <p className="eyebrow pointer-events-none absolute bottom-5 left-5 rounded-full bg-surface/85 px-3 py-1.5 text-ink/65">
+          Delhi Technological University
+        </p>
+      </Reveal>
+    </div>
+  </section>
   );
 };
 
