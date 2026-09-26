@@ -2,35 +2,38 @@
 
 # Aman Kumar: Video Editor & Motion Designer
 
-A portfolio built like an editing timeline: autoplaying short-form reels, long-form YouTube edits, a software toolkit, and a career sequence you scrub by scrolling. Light and dark themes, with 3D scenes in React Three Fiber.
+A portfolio styled as a detective's case board: a torn-paper sheet pinned to a concrete wall, red string between pinned scraps, and a hanging 3D bulb that lights the page when you switch to dark mode. Below it: autoplaying short-form reels, long-form YouTube edits, a software toolkit and a career timeline you scrub by scrolling. Every section is rough paper, tape and cast shadows.
 
 **[Live site](https://portfolio-aman-xi.vercel.app/)**
 
-<img width="720" src="ss/hero.jpg" alt="Hero: a viewfinder with a 3D laptop">
-<img width="720" src="ss/work.jpg" alt="Short-form reels, autoplaying">
+<img width="720" src="ss/hero.jpg" alt="Hero: a case board on a concrete wall, light theme">
+<img width="720" src="ss/hero-dark.jpg" alt="Hero in dark theme, lit by the hanging bulb">
 
 </div>
 
 > **Note**: The 3D model of Delhi Technological University (DTU) used here is an original creation by me (Aman Kumar) and is **not open for reuse or redistribution**. The reels and videos belong to the brands and creators they were made for.
+>
+> The hanging bulb model and the wall texture come from [Poly Haven](https://polyhaven.com), and the paper and rope textures from [ambientCG](https://ambientcg.com). All are CC0 (free to use).
 
 ---
 
 ## Features
 
-- **Short-form**: a grid of 9:16 reels that autoplay muted while on screen. Hovering shows a Sound button. Once sound is on, hovering any reel plays its audio (one at a time), and clicking opens the full video with controls. Filter by client.
+- **The case board (hero)**: a torn sheet on a rough wall with tape, pushpins, polaroids, a stamp, red-pen notes and red strings from the photo to every pinned scrap. Each scrap links to its section, swings on its pin when you hover, and flutters as you scroll away. Foreground rope drifts past at a different speed from the wall. Every shadow falls away from the bulb, so they're short by day and long and sharp at night.
+- **Double-click zoom**: double-click (or double-tap) anywhere on the board to zoom into that spot; do it again, press Esc or scroll to zoom back out.
+- **The bulb and the theme**: a realistic hanging bulb with a brass pull chain. Click it, or the navbar button, to switch between light and dark. It flickers on, lights the wall and laptop, swings when you brush it or scroll, and hangs switched off in light mode. The choice is saved, and follows the device setting until you pick.
+- **Short-form**: 9:16 reels that autoplay muted while on screen. Hovering shows a Sound button; once sound is on, hovering any reel plays its audio (one at a time). Click to open the full video. Filter by client.
 - **Long-form**: YouTube edits as muted looping previews, opened in a full-size player.
 - **Toolkit**: a 3D keyboard of 12 software keycaps (Premiere Pro, After Effects, Photoshop, Illustrator, Blender, Figma, Canva, Three.js, React, Next.js, Tailwind, GSAP).
 - **Journey**: a Premiere-style timeline with tracks and clips. The playhead moves as you scroll and the details change clip by clip.
-- **Interactive throughout**: a viewfinder hero with a live REC timecode, scroll-driven text and stats, a bottom transport bar (timecode, section markers, sound toggle, press `M`), and a URL `#hash` that follows the section you're in.
-- **Light and dark themes**: a toggle in the navbar, saved between visits, following the device setting until you choose.
-- **3D scenes**: an animated laptop in the hero and the DTU front gate in About. Both render only while on screen.
-- **Responsive and accessible**: works down to 320px wide, respects reduced-motion settings, keyboard-friendly.
+- **Paper style throughout**: cards have rough torn edges, tape and left-falling shadows; the navbar and bottom bar are taped paper strips; a bottom transport bar shows timecode, section markers and a sound toggle (press `M`); the URL `#hash` follows the section you're in.
+- **Responsive and accessible**: works down to 320px wide (the board has a separate portrait layout), respects reduced-motion settings, keyboard-friendly.
 
 <div align="center">
-<img width="480" src="ss/hero-dark.jpg" alt="Dark theme hero">
+<img width="480" src="ss/work.jpg" alt="Short-form reels, autoplaying">
+<img width="480" src="ss/work-dark.jpg" alt="Reels in dark theme">
 <img width="480" src="ss/toolkit.jpg" alt="Toolkit keyboard">
 <img width="480" src="ss/journey.jpg" alt="Career timeline">
-<img width="480" src="ss/work-dark.jpg" alt="Reels in dark theme">
 </div>
 
 ---
@@ -39,7 +42,7 @@ A portfolio built like an editing timeline: autoplaying short-form reels, long-f
 
 - **React 19** with **Vite**
 - **Tailwind CSS 4**
-- **Three.js** via `@react-three/fiber` and `@react-three/drei` for the 3D scenes
+- **Three.js** via `@react-three/fiber` and `@react-three/drei` for the bulb, the laptop and the DTU scene
 - **GSAP** (`ScrollTrigger`) for scroll-driven motion
 - **Deployment**: [Vercel](https://vercel.com)
 
@@ -81,7 +84,9 @@ Add its YouTube id to `longForm` in `src/data/work.js`.
 
 ### Changing the look
 
-- Colors, the dark theme and shared styles are in `src/index.css` (the `@theme` block and the `[data-theme="dark"]` block).
+- Colors, the dark theme and shared styles are in `src/index.css` (the `@theme` block and the `[data-theme="dark"]` block). Shadow strength and length are the `--shadow-*` variables there.
+- **The board's text and layout**: the copy is in `src/components/hero/CaseBoard.jsx`; every position, size and rotation is in `src/components/hero/layout.js`, separately for desktop and phone. `lamp` is where the bulb hangs, which sets the shadow direction.
+- **The bulb**: `src/components/Bulb.jsx` (size, flicker, glow); its model is in `public/models/lightbulb_01/`.
 - The Premiere timeline behind the short-form heading is drawn by `src/components/TimelineBackdrop.jsx`. Its strength is the `opacity-75` class in `src/sections/ShortForm.jsx`.
 
 ---
@@ -91,14 +96,16 @@ Add its YouTube id to `longForm` in `src/data/work.js`.
 ```
 src/
   sections/     Hero, Intro, ShortForm, LongForm, Toolkit, Journey, Design, About, Navbar, Footer
-  components/   3D scenes, video tiles and player (media/), keycap logos, transport bar, icons
+  components/   hero/ (case board, strings, torn-paper shapes), Bulb, video tiles and player (media/),
+                keycap logos, transport bar, icons
   data/         Editable content (work, toolkit, journey)
   hooks/        useInView, useTheme
   lib/          Scroll and observer helpers, timecode formatting, video file lookup
   assets/videos/  Reels dropped in here are picked up automatically
 public/
-  models/       3D models (laptop, DTU campus)
-  assets/       Images and the hero laptop's screen video
+  models/       3D models (laptop, DTU campus, light bulb)
+  hero/         Wall, paper and rope textures and the pushpin, used by the hero
+  assets/       Images and the laptop's screen video
 ```
 
 ---
