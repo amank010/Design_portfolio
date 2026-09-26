@@ -74,7 +74,7 @@ const About = () => {
     />
 
     <div className="mt-14 grid gap-5 lg:grid-cols-[1.1fr_1fr]">
-      <Reveal className="glass-light flex flex-col gap-8 rounded-[30px] p-7 sm:p-10">
+      <Reveal className="paper-card flex flex-col gap-8 p-7 sm:p-10">
         <div className="flex items-center gap-4">
           <img src="/assets/face.jpeg" alt="Aman Kumar" className="h-16 w-16 rounded-2xl object-cover" />
           <div>
@@ -128,15 +128,19 @@ const About = () => {
       <Reveal
         ref={modelRef}
         delay={120}
-        className="glass-light relative min-h-[380px] overflow-hidden rounded-[30px] sm:min-h-[460px]"
+        className="paper-card relative min-h-[380px] sm:min-h-[460px]"
+        style={{ "--tape-rotate": "3deg" }}
       >
-        {near && (
-          <Suspense fallback={null}>
-            <About3D />
-          </Suspense>
-        )}
-        <p className="eyebrow pointer-events-none absolute bottom-5 left-5 rounded-full bg-surface/85 px-3 py-1.5 text-ink/65">
-          Delhi Technological University
+        {/* the model sits in the paper like a mounted print */}
+        <div className="absolute inset-3 overflow-hidden rounded-[3px] bg-[#e9e2d6] dark:bg-[#1a1612]">
+          {near && (
+            <Suspense fallback={null}>
+              <About3D />
+            </Suspense>
+          )}
+        </div>
+        <p className="pointer-events-none absolute bottom-7 left-7 font-hand text-xl font-bold text-[#c0261f]">
+          DTU, where it started
         </p>
       </Reveal>
     </div>

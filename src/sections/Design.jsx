@@ -20,12 +20,12 @@ const Design = () => (
       description="When I'm not in a timeline, I design interfaces in Figma and model in Blender."
     />
 
-    <Reveal className="glass-light mt-14 grid gap-2 rounded-[30px] p-2.5 lg:grid-cols-[1.35fr_1fr]">
+    <Reveal className="paper-card mt-14 grid gap-2 p-3 lg:grid-cols-[1.35fr_1fr]">
       <a
         href="https://d-tech-red.vercel.app"
         target="_blank"
         rel="noopener noreferrer"
-        className="group overflow-hidden rounded-[22px] border border-ink/10 bg-surface"
+        className="group overflow-hidden rounded-[3px] border border-ink/10 bg-surface"
         aria-label="Open the live D.Tech site"
       >
         <div className="flex h-9 items-center gap-1.5 border-b border-ink/10 px-4">

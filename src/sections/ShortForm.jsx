@@ -22,7 +22,7 @@ const ReelCard = ({ item, index }) => {
   // no fade-in here: fading a card with a playing video in it makes the GPU
   // redraw it off-screen every frame
   return (
-    <article aria-label={`${item.title} for ${item.client}`}>
+    <article className="reel-card" aria-label={`${item.title} for ${item.client}`}>
       {item.src ? (
         <VideoTile item={item} aspect="9 / 16" accent={accent} badge={item.group} />
       ) : (

@@ -72,7 +72,7 @@ const Monitor = ({ item, index }) => {
   const track = trackById[item.track];
 
   return (
-    <div className="grid min-h-[260px] gap-6 rounded-[28px] bg-night p-6 text-white ring-1 ring-white/5 shadow-[0_30px_60px_-30px_rgb(12_12_16/0.6)] sm:p-8 md:grid-cols-[1fr_auto]">
+    <div className="paper-card-dark grid min-h-[260px] gap-6 p-6 sm:p-8 md:grid-cols-[1fr_auto]">
       <div key={index} className="[animation:monitor-in_0.45s_ease]">
         <p className="eyebrow flex items-center gap-3 text-white/50">
           <span className="track-chip" style={{ "--chip": track.color }}>
@@ -146,11 +146,11 @@ const JourneyTimeline = () => {
         >
           <Monitor item={stops[active]} index={active} />
 
-          <div className="mt-4 overflow-hidden rounded-[24px] border border-white/10 bg-[#141419] text-white shadow-[0_40px_80px_-40px_rgb(12_12_16/0.7)]">
+          <div className="paper-card-dark no-tape mt-4 text-white" style={{ "--rough-pos": "60% 30%" }}>
             <div className="eyebrow flex items-center justify-between border-b border-white/5 px-5 py-3 text-white/45">
               <span>Sequence 01 · Career · scroll to scrub</span>
-              <span className="flex items-center gap-2 tabular-nums text-[#7fa6ff]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#7fa6ff]" />
+              <span className="flex items-center gap-2 tabular-nums text-[#ffb45a]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#ffb45a]" />
                 <span ref={dateRef}>{monthLabel(toMonths(stops[0].start))}</span>
               </span>
             </div>
@@ -235,8 +235,8 @@ const JourneyTimeline = () => {
                   style={{ transform: `translateX(${percent(toMonths(stops[0].start))}%)` }}
                   aria-hidden="true"
                 >
-                  <span className="absolute -left-[6px] top-0 h-3.5 w-3 bg-[#3d7bff] [clip-path:polygon(0_0,100%_0,100%_65%,50%_100%,0_65%)]" />
-                  <span className="absolute bottom-0 left-0 top-0 w-px bg-[#3d7bff] shadow-[0_0_14px_#3d7bff]" />
+                  <span className="absolute -left-[6px] top-0 h-3.5 w-3 bg-accent [clip-path:polygon(0_0,100%_0,100%_65%,50%_100%,0_65%)]" />
+                  <span className="absolute bottom-0 left-0 top-0 w-px bg-accent shadow-[0_0_14px_var(--color-accent)]" />
                 </div>
               </div>
             </div>
@@ -260,7 +260,7 @@ const JourneyList = () => (
               className="absolute -left-[30px] top-6 h-2.5 w-2.5 rounded-full ring-4 ring-paper"
               style={{ background: track.color }}
             />
-            <div className="glass-light rounded-3xl p-5 sm:p-6">
+            <div className="paper-card p-5 sm:p-6">
               <p className="eyebrow flex items-center gap-3 text-ink/50">
                 <span className="track-chip" style={{ "--chip": track.color }}>
                   {track.id}

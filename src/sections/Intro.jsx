@@ -1,16 +1,20 @@
-import { useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 import Reveal from "../components/Reveal";
+import useTheme from "../hooks/useTheme";
 import { stats } from "../data/work";
 import { gsap, useGSAP } from "../lib/gsap";
 import { observe } from "../lib/observe";
 
+const IntroLaptop = lazy(() => import("./IntroLaptop"));
+
 // Each phrase is split into words that light up as the statement scrolls past.
 const statement = [
   { text: "I edit" },
-  { text: "short-form", em: "#7b6cf6" },
+  { text: "short-form", em: "var(--color-accent)" },
   { text: "that stops the scroll and" },
-  { text: "long-form", em: "#3366ff" },
+  { text: "long-form", em: "#c47a1c" },
   { text: "that keeps people watching —" },
   { text: "for brands, startups and creators.", muted: true },
 ];
@@ -53,8 +57,42 @@ const CountUp = ({ value, suffix }) => {
   return <span ref={ref}>{`0${suffix}`}</span>;
 };
 
+// Mounts the laptop once the page has settled after loading, or as soon as the
+// intro gets close, whichever comes first (and keeps it). Waiting keeps its 4 MB
+// of model and video from competing with the hero on first load.
+const useNearby = () => {
+  const ref = useRef(null);
+  const [near, setNear] = useState(false);
+  useEffect(() => {
+    let timer = 0;
+    const mount = () => setNear(true);
+    const whenSettled = () => {
+      timer = window.setTimeout(mount, 2500);
+    };
+    if (document.readyState === "complete") whenSettled();
+    else window.addEventListener("load", whenSettled, { once: true });
+
+    const stop = observe(
+      ref.current,
+      (entry) => {
+        if (entry.isIntersecting) mount();
+      },
+      { rootMargin: "35% 0px" },
+    );
+    return () => {
+      stop();
+      window.clearTimeout(timer);
+      window.removeEventListener("load", whenSettled);
+    };
+  }, []);
+  return [ref, near];
+};
+
 const Intro = () => {
   const ref = useRef(null);
+  const [laptopRef, near] = useNearby();
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+  const [theme] = useTheme();
 
   useGSAP(
     () => {
@@ -75,23 +113,34 @@ const Intro = () => {
   );
 
   return (
-    <section className="container-x relative pb-36 pt-24 sm:pb-44 sm:pt-32">
-      <p
-        ref={ref}
-        className="max-w-[18ch] text-[clamp(2.1rem,5.2vw,4.6rem)] font-medium leading-[1.02] tracking-[-0.035em] sm:max-w-[21ch]"
-      >
-        {statement.map((phrase) =>
-          phrase.text.split(" ").map((word, index) => (
-            <span
-              key={`${phrase.text}-${index}`}
-              className={`intro-word will-change-[opacity] ${phrase.em ? "serif-em" : ""} ${phrase.muted ? "text-ink/40" : ""}`}
-              style={phrase.em ? { color: phrase.em } : undefined}
-            >
-              {word}{" "}
-            </span>
-          )),
-        )}
-      </p>
+    <section className="container-x relative pb-36 pt-20 sm:pb-44 sm:pt-28">
+      <div className="grid items-center gap-8 lg:grid-cols-[1.05fr_1fr] lg:gap-6">
+        <p
+          ref={ref}
+          className="max-w-[18ch] text-[clamp(2.1rem,4.3vw,4rem)] font-medium leading-[1.04] tracking-[-0.035em] sm:max-w-[21ch]"
+        >
+          {statement.map((phrase) =>
+            phrase.text.split(" ").map((word, index) => (
+              <span
+                key={`${phrase.text}-${index}`}
+                className={`intro-word will-change-[opacity] ${phrase.em ? "serif-em" : ""} ${phrase.muted ? "text-ink/40" : ""}`}
+                style={phrase.em ? { color: phrase.em } : undefined}
+              >
+                {word}{" "}
+              </span>
+            )),
+          )}
+        </p>
+
+        {/* the laptop, playing the showreel */}
+        <div ref={laptopRef} className="relative -mx-4 aspect-[1.2] sm:mx-0">
+          {near && (
+            <Suspense fallback={null}>
+              <IntroLaptop isMobile={isMobile} dark={theme === "dark"} />
+            </Suspense>
+          )}
+        </div>
+      </div>
 
       <dl className="mt-16 grid grid-cols-2 gap-x-6 gap-y-10 sm:mt-20 lg:grid-cols-4">
         {stats.map((stat, index) => (

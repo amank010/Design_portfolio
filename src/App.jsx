@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect } from "react";
 
 import Filmstrip from "./components/Filmstrip";
 import Lightbox from "./components/media/Lightbox";
+import PaperFilters from "./components/PaperFilters";
 import SoundProvider from "./components/media/SoundProvider";
 import Transport from "./components/Transport";
 import { ScrollTrigger } from "./lib/gsap";
@@ -69,6 +70,7 @@ const App = () => {
   return (
     <SoundProvider>
       <div className="relative overflow-x-clip">
+        <PaperFilters />
         <Navbar />
         <main>
           <Hero />

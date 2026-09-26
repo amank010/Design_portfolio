@@ -7,14 +7,19 @@
   --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* the case board: marker titles, handwritten notes, typed labels */
+  --font-marker: "Caveat Brush", "Segoe Print", cursive;
+  --font-hand: "Caveat", "Segoe Print", cursive;
+  --font-type: "Special Elite", "Courier New", monospace;
 
-  --color-paper: #f3f3f6;
-  --color-ink: #0c0c10;
+  /* warm paper and ink, with the red of the board's string as the accent */
+  --color-paper: #f2eee7;
+  --color-ink: #15120f;
   /* light cards and chips; always-dark cards (toolkit readout, journey) */
-  --color-surface: #ffffff;
-  --color-night: #0c0c10;
-  --color-stage: #09090c;
-  --color-accent: #3366ff;
+  --color-surface: #fffdf9;
+  --color-night: #15120f;
+  --color-stage: #0d0b09;
+  --color-accent: #d23a2c;
   --color-rec: #ff3b30;
 
   /* Premiere-style label colours: tracks, clips and accents */
@@ -29,19 +34,19 @@
    The same tokens, swapped. Everything built from ink/paper/surface follows
    automatically; the few hand-mixed colours have dark overrides below. */
 :root {
-  --sky-top: #b9cfff;
-  --sky-mid: #dce6ff;
-  --dot: rgb(12 12 16 / 0.07);
+  --accent-glow: rgb(210 58 44 / 0.55);
+  /* fine paper grain laid over every background */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .3 0 0 0 0 .2 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 [data-theme="dark"] {
   color-scheme: dark;
-  --color-paper: #0b0b10;
-  --color-ink: #ececf1;
-  --color-surface: #1a1a22;
-  --color-night: #15151c;
-  --sky-top: #15244a;
-  --sky-mid: #0f1730;
-  --dot: rgb(255 255 255 / 0.06);
+  --color-paper: #0f0d0b;
+  --color-ink: #efe9e1;
+  --color-surface: #1c1915;
+  --color-night: #1a1713;
+  --color-accent: #e5493a;
+  --accent-glow: rgb(229 73 58 / 0.5);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .95 0 0 0 0 .9 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 @layer base {
@@ -53,14 +58,19 @@
   }
 
   body {
-    background: var(--color-paper);
+    /* the page is paper too: fine grain plus a faint rough tooth */
+    background:
+      var(--grain),
+      url("/hero/rough.jpg") 0 0 / 420px,
+      var(--color-paper);
+    background-blend-mode: normal, soft-light, normal;
     color: var(--color-ink);
     transition:
       background-color 0.4s ease,
       color 0.4s ease;
     /* the site's play-triangle cursor, outlined so it shows on dark areas too */
     cursor:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M6 3.5v17l14-8.5z' fill='%230c0c10' stroke='%23fff' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E")
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M6 3.5v17l14-8.5z' fill='%2315120f' stroke='%23fff' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E")
         6 3,
       auto;
   }
@@ -125,23 +135,106 @@
     letter-spacing: -0.01em;
   }
 
+  /* the highlighted words get a quick red marker stroke under them, like the
+     notes on the case board */
+  .section-title em {
+    padding-bottom: 0.06em;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 16' preserveAspectRatio='none'%3E%3Cpath d='M3 11c40-5 92-8 150-7.5 52 .4 100 3.4 144 7' fill='none' stroke='%23d23a2c' stroke-width='4.5' stroke-linecap='round' opacity='.85'/%3E%3C/svg%3E")
+      no-repeat left bottom / 100% 0.2em;
+  }
+
   /* like a Premiere track header: V1, A1, FX */
+  /* a strip of coloured tape with the track name on it */
   .track-chip {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     height: 22px;
-    min-width: 30px;
-    padding: 0 7px;
-    border-radius: 6px;
+    min-width: 34px;
+    padding: 0 9px;
     font-family: var(--font-mono);
     font-size: 11px;
     font-weight: 500;
     color: #fff;
-    background: var(--chip, var(--color-accent));
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.25),
-      0 6px 16px -6px var(--chip, var(--color-accent));
+    rotate: -3deg;
+    background:
+      url("/hero/rough.jpg") 20% 40% / 160px,
+      var(--chip, var(--color-accent));
+    background-blend-mode: overlay, normal;
+    clip-path: polygon(3% 12%, 0 30%, 4% 50%, 0 72%, 3% 100%, 97% 92%, 100% 74%, 96% 52%, 100% 30%, 97% 0);
+    filter: drop-shadow(-2px 2px 0.5px rgb(30 18 6 / 0.25));
+  }
+
+  /* ---------- paper cards ----------
+     Every box on the page is a sheet of rough paper: torn-looking edges
+     (#rough-edge in PaperFilters.jsx), a crisp shadow falling left like the
+     ones on the case board, and a strip of tape holding it up. The paper is a
+     ::before layer so the filter never touches the content. */
+  :root {
+    --card-shadow: -9px 8px 1.5px rgb(40 24 8 / 0.22);
+  }
+  [data-theme="dark"] {
+    --card-shadow: -12px 10px 2px rgb(0 0 0 / 0.55);
+  }
+  .paper-card,
+  .paper-card-dark {
+    position: relative;
+    isolation: isolate;
+    --card-paper: #f8f4ec;
+  }
+  [data-theme="dark"] .paper-card {
+    --card-paper: #25201a;
+  }
+  .paper-card-dark {
+    --card-paper: #1c1915;
+    color: #fff;
+  }
+  [data-theme="dark"] .paper-card-dark {
+    --card-paper: #171410;
+  }
+  .paper-card::before,
+  .paper-card-dark::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 3px;
+    background:
+      url("/hero/rough.jpg") var(--rough-pos, 0 0) / 300px,
+      var(--card-paper);
+    background-blend-mode: overlay, normal;
+    filter: url(#rough-edge) drop-shadow(var(--card-shadow));
+  }
+  .paper-card::after,
+  .paper-card-dark::after,
+  .reel-card::after {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    z-index: 5;
+    width: var(--tape-w, 104px);
+    height: 26px;
+    translate: -50% 0;
+    rotate: var(--tape-rotate, -2.5deg);
+    pointer-events: none;
+    background:
+      url("/hero/rough.jpg") 30% 60% / 240px,
+      linear-gradient(rgb(233 222 178 / 0.84), rgb(222 208 160 / 0.78));
+    background-blend-mode: overlay, normal;
+    clip-path: polygon(3% 0, 0 18%, 3% 36%, 0 55%, 4% 76%, 1% 100%, 97% 100%, 100% 80%, 96% 60%, 100% 42%, 96% 22%, 99% 0);
+    filter: drop-shadow(-2px 2px 0.5px rgb(30 18 6 / 0.2));
+  }
+  .no-tape::after {
+    display: none;
+  }
+  /* reels are taped up too */
+  .reel-card {
+    position: relative;
+    --tape-w: 64px;
+  }
+  .reel-card:nth-child(even) {
+    --tape-rotate: 3deg;
   }
 
   /* ---------- surfaces ---------- */
@@ -162,24 +255,31 @@
       0 24px 48px -28px rgb(0 0 0 / 0.7);
   }
 
-  /* real blur only on the few floating bars; everywhere else it would cost a
-     GPU pass per frame for no visible difference */
-  .glass-dark {
-    background: rgb(16 16 22 / 0.88);
-    border: 1px solid rgb(255 255 255 / 0.09);
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.07),
-      0 16px 40px -18px rgb(0 0 0 / 0.55);
-    backdrop-filter: blur(12px) saturate(150%);
-    -webkit-backdrop-filter: blur(12px) saturate(150%);
-  }
 
-  .dot-grid {
-    background-image: radial-gradient(
-      color-mix(in srgb, var(--color-ink) 11%, transparent) 1px,
-      transparent 1.4px
-    );
-    background-size: 22px 22px;
+  /* navbar: a strip of warm paper held up with tape */
+  .nav-paper {
+    color: var(--color-ink);
+    background:
+      var(--grain),
+      linear-gradient(rgb(246 241 232 / 0.94), rgb(240 234 223 / 0.94));
+    border: 1px solid rgb(21 18 15 / 0.08);
+    box-shadow:
+      0 1px 1px rgb(0 0 0 / 0.08),
+      0 14px 30px -18px rgb(40 26 12 / 0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  [data-theme="dark"] .nav-paper {
+    background:
+      var(--grain),
+      linear-gradient(rgb(30 27 23 / 0.94), rgb(24 21 18 / 0.94));
+    border-color: rgb(255 255 255 / 0.07);
+    box-shadow: 0 14px 30px -18px rgb(0 0 0 / 0.8);
+  }
+  /* the current section gets a red marker stroke */
+  .nav-link.is-active {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M3 8c22-4 50-5 94-2' fill='none' stroke='%23d23a2c' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E")
+      no-repeat center calc(100% - 3px) / calc(100% - 22px) 8px;
   }
 
   /* ---------- buttons ---------- */
@@ -223,10 +323,10 @@
     color: #fff;
     box-shadow:
       inset 0 1px 0 rgb(255 255 255 / 0.25),
-      0 10px 24px -10px rgb(51 102 255 / 0.8);
+      0 10px 24px -10px var(--accent-glow);
   }
   .btn-accent:hover {
-    background: #2350e8;
+    background: color-mix(in srgb, var(--color-accent) 86%, #000);
   }
   .btn-light {
     background: rgb(255 255 255 / 0.65);
@@ -281,69 +381,270 @@
     translate: 0 0;
   }
 
-  /* ---------- hero ---------- */
+  /* ---------- hero: the case board ---------- */
 
-  .rec-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: var(--color-rec);
-    box-shadow: 0 0 12px rgb(255 59 48 / 0.8);
-    animation: rec-blink 1.2s ease-in-out infinite;
+  /* Board size, and where the bulb hangs (its glass centre). The 3D bulb puts
+     its glass 72% of the way down its canvas, so the canvas is sized from that. */
+  .hero-case {
+    --board-top: 100px;
+    --bw: min(1120px, 86vw, calc((100svh - 170px) * 1.5));
+    --bh: calc(var(--bw) / 1.5);
+    --lamp-x: calc(50% + var(--bw) * 0.5 + 18px);
+    --lamp-y: calc(var(--board-top) + var(--bh) * 0.24);
+    --bulb-w: calc(var(--bw) * 0.24);
   }
-
-  .vf-corner {
+  @media (max-width: 699px) {
+    .hero-case {
+      --board-top: 96px;
+      --bw: calc(100vw - 20px);
+      --bh: calc(var(--bw) / 0.6);
+      --lamp-x: calc(50% + var(--bw) * 0.4);
+      --lamp-y: calc(var(--board-top) + var(--bh) * 0.11);
+      --bulb-w: calc(var(--bw) * 0.4);
+    }
+  }
+  .hero-bulb {
     position: absolute;
-    width: 26px;
-    height: 26px;
-    border: 0 solid color-mix(in srgb, var(--color-ink) 35%, transparent);
-  }
-  .vf-corner.tl {
     top: 0;
-    left: 0;
-    border-top-width: 1.5px;
-    border-left-width: 1.5px;
-    border-top-left-radius: 6px;
-  }
-  .vf-corner.tr {
-    top: 0;
-    right: 0;
-    border-top-width: 1.5px;
-    border-right-width: 1.5px;
-    border-top-right-radius: 6px;
-  }
-  .vf-corner.bl {
-    bottom: 0;
-    left: 0;
-    border-bottom-width: 1.5px;
-    border-left-width: 1.5px;
-    border-bottom-left-radius: 6px;
-  }
-  .vf-corner.br {
-    right: 0;
-    bottom: 0;
-    border-right-width: 1.5px;
-    border-bottom-width: 1.5px;
-    border-bottom-right-radius: 6px;
+    left: calc(var(--lamp-x) - var(--bulb-w) / 2);
+    width: var(--bulb-w);
+    height: calc(var(--lamp-y) / 0.72);
   }
 
-  /* white letters with a blue extruded edge */
-  .hero-word {
-    font-weight: 800;
-    font-size: clamp(3.9rem, 17.6vw, 19rem);
-    line-height: 0.8;
-    letter-spacing: -0.055em;
-    color: #fff;
-    text-shadow:
-      0 0.004em 0 #dde7ff,
-      0 0.008em 0 #cfdcff,
-      0 0.012em 0 #c1d2ff,
-      0 0.016em 0 #b3c7ff,
-      0 0.02em 0 #a5bdff,
-      0 0.024em 0 #97b2ff,
-      0 0.028em 0 #89a8ff,
-      0 0.032em 0 #7b9dff,
-      0 0.08em 0.12em rgb(30 60 170 / 0.28);
+  .hero-rope {
+    max-width: none;
+    filter: blur(4px) saturate(0.9);
+    translate: var(--drift-x, 0) var(--drift-y, 0);
+    transition: translate 0.8s ease-out;
+  }
+  [data-theme="dark"] .hero-rope {
+    filter: blur(4px) brightness(0.45) sepia(0.3);
+  }
+
+  /* rough concrete wall; darker, warmer and vignetted at night */
+  .hero-wall {
+    background:
+      radial-gradient(ellipse 90% 80% at 50% 40%, transparent 45%, rgb(40 30 20 / 0.28) 100%),
+      url("/hero/wall-light.jpg") center / 900px repeat,
+      #b9b3a8;
+  }
+  [data-theme="dark"] .hero-wall {
+    background:
+      radial-gradient(ellipse 85% 80% at 50% 40%, transparent 30%, rgb(0 0 0 / 0.72) 100%),
+      linear-gradient(rgb(34 24 14 / 0.35), rgb(34 24 14 / 0.35)),
+      url("/hero/wall-dark.jpg") center / 900px repeat,
+      #1d1915;
+  }
+  /* the bulb's warm light spilling over the wall and board (night only) */
+  .lamp-pool,
+  .lamp-shade,
+  .lamp-bloom {
+    opacity: 0;
+  }
+  [data-theme="dark"] .lamp-pool,
+  [data-theme="dark"] .lamp-shade,
+  [data-theme="dark"] .lamp-bloom {
+    opacity: 1;
+  }
+  /* the glow right around the bulb */
+  .lamp-bloom {
+    background: radial-gradient(
+      circle calc(var(--bw) * 0.13) at var(--lamp-x) var(--lamp-y),
+      rgb(255 214 150 / 0.55),
+      rgb(255 180 100 / 0.22) 40%,
+      rgb(255 160 80 / 0.06) 70%,
+      transparent 100%
+    );
+    mix-blend-mode: screen;
+  }
+
+  /* double-click the board to zoom in and out */
+  .board-zoom {
+    cursor: zoom-in;
+  }
+  .board-zoom[data-zoomed="true"] {
+    cursor: zoom-out;
+  }
+  .board-zoom a {
+    cursor: pointer;
+  }
+  /* Night: the room is lit only by the bulb. The shade darkens and warms
+     everything with distance from it (multiply keeps the red string and ink
+     readable); the pool is the bright spill close to the bulb. */
+  .lamp-shade {
+    background: radial-gradient(
+      circle 95vmax at var(--lamp-x) var(--lamp-y),
+      rgb(255 214 160),
+      rgb(214 164 112) 30%,
+      rgb(120 88 60) 62%,
+      rgb(52 38 28) 100%
+    );
+    mix-blend-mode: multiply;
+  }
+  .lamp-pool {
+    background: radial-gradient(
+      circle 38vmax at var(--lamp-x) var(--lamp-y),
+      rgb(255 176 96 / 0.3),
+      rgb(255 150 70 / 0.08) 45%,
+      transparent 75%
+    );
+    mix-blend-mode: soft-light;
+  }
+
+  .paper-white {
+    background: url("/hero/paper-white.jpg") center / 700px, #f4f1ec;
+  }
+  .paper-cream {
+    background: url("/hero/paper-cream.jpg") center / 500px, #e8e0d4;
+  }
+  .paper-kraft {
+    background: url("/hero/paper-kraft.jpg") center / 500px, #b58c62;
+  }
+  .paper-yellow {
+    background: linear-gradient(rgb(236 214 120 / 0.55), rgb(236 214 120 / 0.55)),
+      url("/hero/paper-kraft.jpg") center / 400px, #e3cf8a;
+  }
+  .paper-red {
+    background: linear-gradient(rgb(200 40 34 / 0.78), rgb(200 40 34 / 0.78)),
+      url("/hero/paper-cream.jpg") center / 400px, #c62b24;
+  }
+  /* a page torn from a ruled notebook */
+  .paper-lined {
+    background:
+      linear-gradient(90deg, transparent 13%, rgb(214 70 60 / 0.55) 13%, rgb(214 70 60 / 0.55) calc(13% + 1.5px), transparent calc(13% + 1.5px)),
+      repeating-linear-gradient(transparent 0 calc(1.35cqw - 1px), rgb(90 130 190 / 0.4) calc(1.35cqw - 1px) 1.35cqw),
+      #f5f1e6;
+  }
+  /* a sticky note */
+  .paper-sticky {
+    background: linear-gradient(170deg, #f7e27c, #efd35c 70%, #e6c64e);
+  }
+  [data-theme="dark"] .paper-white {
+    background: url("/hero/paper-white.jpg") center / 700px, #ece6dc;
+  }
+
+  /* rough, toothy paper (like cold-press or handmade stock) with darker worn
+     edges, blended over whatever paper colour it's on. Clip-paths clip it too. */
+  .paper-rough {
+    position: relative;
+  }
+  .paper-rough::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 75% at 50% 45%, transparent 60%, rgb(70 45 20 / 0.45) 100%),
+      url("/hero/rough.jpg") var(--rough-pos, 0 0) / 300px;
+    mix-blend-mode: overlay;
+    opacity: 0.8;
+  }
+  /* the white, fibrous inside of the paper showing along a tear */
+  .paper-fibre {
+    background:
+      url("/hero/rough.jpg") var(--rough-pos, 0 0) / 220px,
+      #f6f1e7;
+    background-blend-mode: overlay, normal;
+  }
+
+  /* a see-through strip of masking tape */
+  .tape {
+    background:
+      url("/hero/rough.jpg") 30% 60% / 240px,
+      linear-gradient(rgb(233 222 178 / 0.82), rgb(222 208 160 / 0.76));
+    background-blend-mode: overlay, normal;
+  }
+
+  /* Shadows cast away from the lamp (see castShadow in hero/paper.js, which
+     sets --sx/--sy/--sb): mostly to the left, crisp. By day the bulb is off,
+     so they're shorter and lighter; at night it's the only light, so they're
+     longer, darker and sharper. */
+  :root {
+    --shadow-k: 0.8;
+    --shadow-blur-k: 1;
+    --shadow-a: 0.36;
+  }
+  [data-theme="dark"] {
+    --shadow-k: 1.3;
+    --shadow-blur-k: 0.7;
+    --shadow-a: 0.7;
+  }
+  .cast {
+    filter: drop-shadow(
+      calc(var(--sx, -4px) * var(--shadow-k))
+      calc(var(--sy, 2px) * var(--shadow-k))
+      calc(var(--sb, 2px) * var(--shadow-blur-k))
+      rgb(24 13 4 / var(--shadow-a))
+    );
+  }
+
+  .pin {
+    position: absolute;
+    width: var(--pin, 22px);
+    height: var(--pin, 22px);
+    translate: -50% -60%;
+    background: url("/hero/pin.png") center / contain no-repeat;
+    pointer-events: none;
+  }
+  /* a pin stands well off the paper, so its shadow is long and dark */
+  .pin.cast {
+    filter: drop-shadow(
+      calc(var(--sx, -6px) * var(--shadow-k))
+      calc(var(--sy, 3px) * var(--shadow-k))
+      calc(var(--sb, 2px) * var(--shadow-blur-k))
+      rgb(20 10 2 / calc(var(--shadow-a) * 0.8))
+    );
+  }
+
+  .polaroid {
+    background:
+      url("/hero/rough.jpg") var(--rough-pos, 0 0) / 260px,
+      #f6f2ea;
+    background-blend-mode: overlay, normal;
+    box-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.12);
+  }
+
+  /* hand-painted lettering on the board */
+  .board-title {
+    font-family: var(--font-marker);
+    letter-spacing: 0.01em;
+    filter: url(#dry-brush);
+  }
+  .board-marker {
+    font-family: var(--font-marker);
+    font-size-adjust: none;
+    letter-spacing: 0.01em;
+  }
+
+  /* a scrap swings from its pin when you point at it */
+  .scrap {
+    rotate: var(--rotate, 0deg);
+    transition:
+      rotate 0.5s cubic-bezier(0.3, 1.5, 0.5, 1),
+      translate 0.5s cubic-bezier(0.3, 1.5, 0.5, 1),
+      filter 0.3s;
+  }
+  .scrap:hover,
+  .scrap:focus-visible {
+    rotate: var(--hover-rotate, 0deg);
+    translate: 0 -3px;
+  }
+
+  .stamp {
+    border: 3px solid currentColor;
+    border-radius: 6px;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* red string between pins; drawn in on load (see Strings.jsx) */
+  .string path {
+    fill: none;
+    stroke: #b3201c;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+  }
+  [data-theme="dark"] .string path {
+    stroke: #c7302a;
   }
 
   /* ---------- filmstrip ---------- */
@@ -386,7 +687,7 @@
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    border-radius: 22px;
+    border-radius: 6px;
     background: #121218;
     border: 1px solid color-mix(in srgb, var(--color-ink) 8%, transparent);
     box-shadow: 0 24px 50px -28px rgb(20 28 60 / 0.45);
@@ -406,7 +707,7 @@
     border-color: var(--color-accent);
     box-shadow:
       0 0 0 1px var(--color-accent),
-      0 30px 70px -30px rgb(51 102 255 / 0.55);
+      0 30px 70px -30px var(--accent-glow);
   }
 
   .tile-media {
@@ -518,7 +819,7 @@
     flex-direction: column;
     overflow: hidden;
     aspect-ratio: 9 / 16;
-    border-radius: 22px;
+    border-radius: 6px;
     border: 1px solid rgb(255 255 255 / 0.08);
     background:
       radial-gradient(120% 60% at 50% 110%, color-mix(in srgb, var(--c) 28%, transparent), transparent 70%),
@@ -575,16 +876,16 @@
     transform-style: preserve-3d;
     transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
     border-radius: 36px;
-    background: linear-gradient(180deg, #f6f6f9 0%, #e2e2e9 100%);
+    background: linear-gradient(180deg, #f8f5ef 0%, #e6dfd4 100%);
     box-shadow:
       inset 0 2px 0 #fff,
       inset 0 -2px 0 rgb(0 0 0 / 0.05),
-      0 14px 0 -2px #cdced8,
-      0 50px 80px -40px rgb(24 28 60 / 0.5);
+      0 14px 0 -2px #d3cabd,
+      0 50px 80px -40px rgb(40 28 16 / 0.45);
   }
 
   [data-theme="dark"] .keyboard-plate {
-    background: linear-gradient(180deg, #25252e 0%, #18181f 100%);
+    background: linear-gradient(180deg, #2a2621 0%, #1b1815 100%);
     box-shadow:
       inset 0 2px 0 rgb(255 255 255 / 0.08),
       inset 0 -2px 0 rgb(0 0 0 / 0.3),
@@ -647,7 +948,7 @@
   .key.is-active .key-base {
     box-shadow:
       0 0 0 2px var(--color-accent),
-      0 16px 26px -8px rgb(51 102 255 / 0.55);
+      0 16px 26px -8px var(--accent-glow);
   }
 
   /* ---------- sound toggle equaliser ---------- */
@@ -714,12 +1015,6 @@
   }
 }
 
-@keyframes rec-blink {
-  50% {
-    opacity: 0.15;
-  }
-}
-
 /* Looping animations keep ticking on the main thread even off screen, so
    sections that have them pause while out of view (see App.jsx). */
 [data-offscreen="true"],
@@ -771,7 +1066,6 @@
     transition: none;
   }
   .marquee,
-  .rec-dot,
   .eq.is-on i {
     animation: none;
   }

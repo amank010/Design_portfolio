@@ -46,7 +46,7 @@ const LongForm = () => {
       <div className="mt-14 grid gap-x-6 gap-y-12 md:grid-cols-2">
         {items.map((item) => (
           <article key={item.id}>
-            <div className="glass-light rounded-[26px] p-2">
+            <div className="paper-card p-2.5" style={{ "--rough-pos": "40% 20%" }}>
               {item.youtube ? (
                 <YouTubeTile item={item} accent={ACCENT} badge={item.client} meta={item.duration} />
               ) : (

@@ -27,7 +27,6 @@ const Toolkit = () => {
 
   return (
     <section id="toolkit" data-marker="Toolkit" className="relative overflow-hidden py-24 sm:py-32">
-      <div className="dot-grid absolute inset-0 -z-10 opacity-70" />
 
       <div className="container-x">
         <SectionHeader
@@ -74,7 +73,7 @@ const Toolkit = () => {
           </Reveal>
 
           <div className="flex flex-col gap-10">
-            <Reveal className="rounded-[28px] bg-night p-6 text-white ring-1 ring-white/5 shadow-[0_30px_60px_-30px_rgb(12_12_16/0.6)] sm:p-8">
+            <Reveal className="paper-card-dark p-6 sm:p-8">
               <div className="eyebrow flex items-center justify-between text-white/45">
                 <span className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-track-amber" />
